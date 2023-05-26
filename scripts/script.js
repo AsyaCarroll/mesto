@@ -1,7 +1,7 @@
 let page = document.querySelector('.page');
 let editButton = page.querySelector('.profile__edit-button'); //кнопка изменения профиля
 let popUp = page.querySelector('.popup'); //попап
-let closeButton = page.querySelector('.popup__close'); //кнопка закрытия попапа
+let poppUpCloseButton = page.querySelector('.popup__close'); //кнопка закрытия попапа
 let formElement = page.querySelector('.popup__form'); //форма
 // Находим поля формы в DOM
 let nameInput = formElement.querySelector('.popup__input_type_name'); //имя пользователя
@@ -25,10 +25,10 @@ function handleFormSubmit(evt) {
     profileName.textContent = nameInput.value;
     profileDesc.textContent = jobInput.value;
 
-    popUp.classList.remove('popup_opened');
+    closePopUp();
 }
 
 
 editButton.addEventListener('click', showPopUp);
-closeButton.addEventListener('click', closePopUp);
+poppUpCloseButton.addEventListener('click', closePopUp);
 formElement.addEventListener('submit', handleFormSubmit);
