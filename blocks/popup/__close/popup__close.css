@@ -6,9 +6,9 @@
     padding: 0;
     cursor: pointer;
     margin: 8px;
-    position: relative;
-    left: 32px;
-    top: -186px;
+    position: absolute;
+    left: 430px;
+    top: -48px;
     background-image: url(../../../images/close-icon.svg);
     background-size: cover;
 }
@@ -21,7 +21,7 @@
     .popup__close {
         width: 20px;
         height: 20px;
-        left: -10px;
-        top: -194px;
+        left: 255px;
+        top: -36px;
     }
 }

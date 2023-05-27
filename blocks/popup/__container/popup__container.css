@@ -6,14 +6,11 @@
     padding: 34px 36px 37px 36px;
     box-sizing: border-box;
     position: relative;
-    left: 32px;
-    /*из-затого, что в .popup лежит не только контейнер, но и кнопка закрытия, модальное окно не отцентрировано без данного сдвига. для центрирования он как раз и требуется*/
 }
 
 @media screen and (max-width: 768px) {
     .popup__container {
         padding: 25px 22px;
         width: 282px;
-        left: 18px;
     }
 }
