@@ -109,8 +109,6 @@ function deletePlace(evt) {
     evt.target.parentElement.parentElement.remove();
 }
 
-// function 
-
 loadCards();
 editButton.addEventListener('click', showPopUpProf);
 addButton.addEventListener('click', showPopUpPlace);
