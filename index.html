@@ -28,8 +28,19 @@
             <button type="button" class="profile__add-button"></button>
         </section>
         <section class="elements" aria-label="фотографии">
+            <template id="element">
+                <article class="element">
+                    <img src="#" alt="#" class="element__pic">
+                    <button class="element__trash" type="button"><img src="./images/trash.svg" alt="удалить"></button>
+                    <div class="element__description">
+                        <h2 class="element__name">name</h2>
+                        <button type="button" class="element__like"></button>
+                    </div>
+                </article>
+            </template>
             <article class="element">
                 <img src="./images/karachaevsk.jpg" alt="карачаевск" class="element__pic">
+                <button class="element__trash" type="button"><img src="./images/trash.svg" alt="удалить"></button>
                 <div class="element__description">
                     <h2 class="element__name">Карачаевск</h2>
                     <button type="button" class="element__like"></button>
@@ -37,6 +48,7 @@
             </article>
             <article class="element">
                 <img src="./images/elbrus.png" alt="гора эльбрус" class="element__pic">
+                <button class="element__trash" type="button"><img src="./images/trash.svg" alt="удалить"></button>
                 <div class="element__description">
                     <h2 class="element__name">Гора Эльбрус</h2>
                     <button type="button" class="element__like"></button>
@@ -44,6 +56,7 @@
             </article>
             <article class="element">
                 <img src="./images/dombay.png" alt="домбай" class="element__pic">
+                <button class="element__trash" type="button"><img src="./images/trash.svg" alt="удалить"></button>
                 <div class="element__description">
                     <h2 class="element__name">Домбай</h2>
                     <button type="button" class="element__like"></button>
@@ -51,6 +64,7 @@
             </article>
             <article class="element">
                 <img src="./images/elbrus.png" alt="гора эльбрус" class="element__pic">
+                <button class="element__trash" type="button"><img src="./images/trash.svg" alt="удалить"></button>
                 <div class="element__description">
                     <h2 class="element__name">Гора Эльбрус</h2>
                     <button type="button" class="element__like"></button>
@@ -58,6 +72,7 @@
             </article>
             <article class="element">
                 <img src="./images/dombay.png" alt="домбай" class="element__pic">
+                <button class="element__trash" type="button"><img src="./images/trash.svg" alt="удалить"></button>
                 <div class="element__description">
                     <h2 class="element__name">Домбай</h2>
                     <button type="button" class="element__like"></button>
@@ -65,6 +80,7 @@
             </article>
             <article class="element">
                 <img src="./images/karachaevsk.jpg" alt="карачаевск" class="element__pic">
+                <button class="element__trash" type="button"><img src="./images/trash.svg" alt="удалить"></button>
                 <div class="element__description">
                     <h2 class="element__name">Карачаево-Черкасия</h2>
                     <button type="button" class="element__like"></button>
@@ -75,15 +91,35 @@
     <footer class="footer">
         <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
     </footer>
-    <div class="popup">
+    <section class="popup popup__illustration">
+        <figure class="popup__figure">
+            <img src="./images/dombay.png" alt="#" class="popup__illustration-img">
+            <figcaption class="popup__illustration-desc">place</figcaption>
+            <button type="button" aria-label="закрыть" class="popup__close"></button>
+        </figure>
+    </section>
+    <div class="popup popup__edit-prof">
         <div class="popup__container">
-            <form action="#" class="popup__form" name="edit-form">
+            <form action="#" class="popup__form popup__edit-form" name="edit-form">
                 <h2 class="popup__edit-title">Редактировать профиль</h2>
                 <input type="text" name="name" value="Жак-Ив Кусто" placeholder="Имя" required
                     class="popup__input popup__input_type_name">
                 <input type="text" name="description" value="Исследователь океана" placeholder="Описание" required
                     class="popup__input popup__input_type_description">
                 <button type="submit" class="popup__submit">Сохранить</button>
+            </form>
+            <button type="button" aria-label="закрыть" class="popup__close"></button>
+        </div>
+    </div>
+    <div class="popup popup__add-place">
+        <div class="popup__container">
+            <form action="#" class="popup__form popup__add-form" name="edit-form">
+                <h2 class="popup__edit-title">Новое место</h2>
+                <input type="text" name="place-name" placeholder="Название" required
+                    class="popup__input popup__input_type_pic-name">
+                <input type="text" name="place-link" placeholder="Ссылка на картинку" required
+                    class="popup__input popup__input_type_link">
+                <button type="submit" class="popup__submit">Создать</button>
             </form>
             <button type="button" aria-label="закрыть" class="popup__close"></button>
         </div>
