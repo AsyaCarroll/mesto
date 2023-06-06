@@ -1,8 +1,8 @@
 const page = document.querySelector('.page');
 const editButton = page.querySelector('.profile__edit-button'); //кнопка изменения профиля
 const addButton = page.querySelector('.profile__add-button'); //кнопка добавления места
-let popUpProf = page.querySelector('.popup__edit-prof'); //попап профиля
-let popUpPlace = page.querySelector('.popup__add-place'); //попап добавления места
+let popUpProf = page.querySelector('.edit-prof'); //попап профиля
+let popUpPlace = page.querySelector('.add-place'); //попап добавления места
 //let popUpCloseButton = page.querySelectorAll('.popup__close'); кнопка закрытия попапа
 const formEdit = page.querySelector('.popup__edit-form'); //форма редактирования
 const formAdd = page.querySelector('.popup__add-form'); //форма добавления
@@ -51,7 +51,7 @@ const initialCards = [
 const likeElements = Array.from(allElements.querySelectorAll('.element__like'));
 const deleteElements = Array.from(allElements.querySelectorAll('.element__trash'));
 
-let popUpIll = page.querySelector('.popup__illustration');
+let popUpIll = page.querySelector('.illustration');
 const popUpPic = Array.from(allElements.querySelectorAll('.element__pic'));
 
 function loadCards() {
