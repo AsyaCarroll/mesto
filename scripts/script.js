@@ -59,7 +59,6 @@ function loadCards() {
 }
 
 function showPopUp(element) {
-    console.log(element.target)
     element.classList.add('popup_opened');
     if (element == popUpProf) {
         nameInput.value = profileName.textContent;
@@ -80,7 +79,6 @@ function handleFormSubmit(evt) {
 
 function handleAddFormSubmit(evt) {
     evt.preventDefault();
-    console.log(evt.target)
     allElements.prepend(createCard(placeName.value, placeLink.value));
     allElements = page.querySelector('.elements');
     likeElements = Array.from(allElements.querySelectorAll('.element__like'));
@@ -93,7 +91,6 @@ function handleAddFormSubmit(evt) {
         page.querySelector('.popup__illustration-img').src = evt.target.src;
         page.querySelector('.popup__illustration-desc').textContent = evt.target.parentElement.querySelector('.element__name').textContent;
     });
-    console.log(popUpPic[0])
     placeLink.value = '';
     placeName.value = '';
     closePopUp(evt.target.parentElement.parentElement);
