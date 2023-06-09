@@ -4,4 +4,5 @@
     border-radius: 10px;
     padding-bottom: 21px;
     position: relative;
+    display: grid;
 }
