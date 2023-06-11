@@ -14,8 +14,11 @@ const profileDesc = page.querySelector('.profile__description');
 const placeName = page.querySelector('.popup__input_type_pic-name'); //инпут попапа - название места
 const placeLink = page.querySelector('.popup__input_type_link'); // инпут ссылка на картинку места
 
-let allElements = page.querySelector('.elements');
+const allElements = page.querySelector('.elements');
 const elementTemplate = page.querySelector('#element').content; //шаблон элемента
+const popUpIll = page.querySelector('.illustration');
+const illustration = page.querySelector('.popup__illustration-img');
+const illustrationDesc = page.querySelector('.popup__illustration-desc');
 
 const initialCards = [
     {
@@ -49,6 +52,13 @@ function createCard(name, link) {
     elementAdded.querySelector('.element__pic').src = link;
     elementAdded.querySelector('.element__pic').alt = name;
     elementAdded.querySelector('.element__name').textContent = name;
+    elementAdded.querySelector('.element__like').addEventListener('click', switchLike);
+    elementAdded.querySelector('.element__trash').addEventListener('click', deletePlace);
+    elementAdded.querySelector('.element__pic').addEventListener('click', function (evt) {
+        showPopUp(popUpIll);
+        illustration.src = evt.target.src;
+        illustrationDesc.textContent = evt.target.parentElement.querySelector('.element__name').textContent;
+    });
     return elementAdded;
 }
 
@@ -60,10 +70,12 @@ function loadCards() {
 
 function showPopUp(element) {
     element.classList.add('popup_opened');
-    if (element == popUpProf) {
-        nameInput.value = profileName.textContent;
-        jobInput.value = profileDesc.textContent;
-    }
+}
+
+function showPopUpProfile() {
+    nameInput.value = profileName.textContent;
+    jobInput.value = profileDesc.textContent;
+    showPopUp(popUpProf);
 }
 
 function closePopUp(element) {
@@ -80,20 +92,9 @@ function handleFormSubmit(evt) {
 function handleAddFormSubmit(evt) {
     evt.preventDefault();
     allElements.prepend(createCard(placeName.value, placeLink.value));
-    allElements = page.querySelector('.elements');
-    likeElements = Array.from(allElements.querySelectorAll('.element__like'));
-    likeElements[0].addEventListener('click', switchLike);
-    deleteElements = Array.from(allElements.querySelectorAll('.element__trash'));
-    deleteElements[0].addEventListener('click', deletePlace);
-    popUpPic = Array.from(allElements.querySelectorAll('.element__pic'));
-    popUpPic[0].addEventListener('click', function (evt) {
-        showPopUp(popUpIll);
-        page.querySelector('.popup__illustration-img').src = evt.target.src;
-        page.querySelector('.popup__illustration-desc').textContent = evt.target.parentElement.querySelector('.element__name').textContent;
-    });
     placeLink.value = '';
     placeName.value = '';
-    closePopUp(evt.target.parentElement.parentElement);
+    closePopUp(popUpPlace);
 }
 
 function switchLike(evt) {
@@ -106,24 +107,11 @@ function deletePlace(evt) {
 
 //не до конца поняла, как имеено следует навести порядок в коде. разложить по папкам функции, их вызовы и установку слушателей?
 
-loadCards();
-
-let likeElements = Array.from(allElements.querySelectorAll('.element__like'));
-let deleteElements = Array.from(allElements.querySelectorAll('.element__trash'));
-let popUpPic = Array.from(allElements.querySelectorAll('.element__pic'));
-const popUpIll = page.querySelector('.illustration');
-
-editButton.addEventListener('click', function () { showPopUp(popUpProf) });
+editButton.addEventListener('click', function () { showPopUpProfile() });
 addButton.addEventListener('click', function () { showPopUp(popUpPlace) });
-popUpPic.forEach(item => item.addEventListener('click', function (evt) {
-    showPopUp(popUpIll);
-    page.querySelector('.popup__illustration-img').src = evt.target.src;
-    page.querySelector('.popup__illustration-desc').textContent = evt.target.parentElement.querySelector('.element__name').textContent;
-}));
 popUpProf.querySelector('.popup__close').addEventListener('click', function () { closePopUp(popUpProf) });
 popUpPlace.querySelector('.popup__close').addEventListener('click', function () { closePopUp(popUpPlace) });
 popUpIll.querySelector('.popup__close').addEventListener('click', function () { closePopUp(popUpIll) });
 formEdit.addEventListener('submit', handleFormSubmit);
 formAdd.addEventListener('submit', handleAddFormSubmit);
-likeElements.forEach(item => item.addEventListener('click', switchLike));
-deleteElements.forEach(item => item.addEventListener('click', deletePlace));
+loadCards();
