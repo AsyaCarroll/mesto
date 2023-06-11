@@ -86,7 +86,7 @@ function handleFormSubmit(evt) {
     evt.preventDefault();
     profileName.textContent = nameInput.value;
     profileDesc.textContent = jobInput.value;
-    closePopUp();
+    closePopUp(popUpProf);
 }
 
 function handleAddFormSubmit(evt) {
