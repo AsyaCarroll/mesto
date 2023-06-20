@@ -3,7 +3,6 @@ const editButton = page.querySelector('.profile__edit-button'); //кнопка �
 const addButton = page.querySelector('.profile__add-button'); //кнопка добавления места
 const popUpProf = page.querySelector('.edit-prof'); //попап профиля
 const popUpPlace = page.querySelector('.add-place'); //попап добавления места
-//let popUpCloseButton = page.querySelectorAll('.popup__close'); кнопка закрытия попапа
 const formEdit = page.querySelector('.popup__edit-form'); //форма редактирования
 const formAdd = page.querySelector('.popup__add-form'); //форма добавления
 
@@ -95,6 +94,7 @@ function handleAddFormSubmit(evt) {
     placeLink.value = '';
     placeName.value = '';
     closePopUp(popUpPlace);
+    popUpPlace.querySelector('.popup__submit').classList.add('popup__submit_disabled');
 }
 
 function switchLike(evt) {
@@ -105,8 +105,6 @@ function deletePlace(evt) {
     evt.target.parentElement.parentElement.remove();
 }
 
-//не до конца поняла, как имеено следует навести порядок в коде. разложить по папкам функции, их вызовы и установку слушателей?
-
 editButton.addEventListener('click', function () { showPopUpProfile() });
 addButton.addEventListener('click', function () { showPopUp(popUpPlace) });
 popUpProf.querySelector('.popup__close').addEventListener('click', function () { closePopUp(popUpProf) });
@@ -114,4 +112,5 @@ popUpPlace.querySelector('.popup__close').addEventListener('click', function () 
 popUpIll.querySelector('.popup__close').addEventListener('click', function () { closePopUp(popUpIll) });
 formEdit.addEventListener('submit', handleFormSubmit);
 formAdd.addEventListener('submit', handleAddFormSubmit);
+
 loadCards();

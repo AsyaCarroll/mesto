@@ -54,10 +54,12 @@
         <div class="popup__container">
             <form action="#" class="popup__form popup__edit-form" name="edit-form">
                 <h2 class="popup__edit-title">Редактировать профиль</h2>
-                <input type="text" name="name" value="Жак-Ив Кусто" placeholder="Имя" required
-                    class="popup__input popup__input_type_name">
+                <input type="text" name="name" value="Жак-Ив Кусто" placeholder="Имя" required minlength="2"
+                    maxlength="40" class="popup__input popup__input_type_name" id="name-input">
+                <span class="popup__input-error name-input-error"></span>
                 <input type="text" name="description" value="Исследователь океана" placeholder="Описание" required
-                    class="popup__input popup__input_type_description">
+                    minlength="2" maxlength="200" class="popup__input popup__input_type_description" id="desc-input">
+                <span class="popup__input-error desc-input-error"></span>
                 <button type="submit" class="popup__submit">Сохранить</button>
             </form>
             <button type="button" aria-label="закрыть" class="popup__close"></button>
@@ -65,18 +67,22 @@
     </div>
     <div class="popup add-place">
         <div class="popup__container">
-            <form action="#" class="popup__form popup__add-form" name="edit-form">
+            <form action="#" class="popup__form popup__add-form" name="add-form">
                 <h2 class="popup__edit-title">Новое место</h2>
-                <input type="text" name="place-name" placeholder="Название" required
-                    class="popup__input popup__input_type_pic-name">
+                <input type="text" name="place-name" placeholder="Название" required minlength="2" maxlength="30"
+                    class="popup__input popup__input_type_pic-name" id="place-input">
+                <span class="popup__input-error place-input-error"></span>
                 <input type="text" name="place-link" placeholder="Ссылка на картинку" required
-                    class="popup__input popup__input_type_link">
+                    pattern="(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])"
+                    class="popup__input popup__input_type_link" id="link-input">
+                <span class="popup__input-error link-input-error"></span>
                 <button type="submit" class="popup__submit">Создать</button>
             </form>
             <button type="button" aria-label="закрыть" class="popup__close"></button>
         </div>
     </div>
     <script src="./scripts/script.js"></script>
+    <script src="./scripts/validate.js"></script>
 </body>
 
 </html>
