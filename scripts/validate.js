@@ -7,17 +7,11 @@ const classes = {
     errorClass: 'popup__input-error_active',
 };
 
-const closePopUpEsc = (popup) => {
-    document.addEventListener('keydown', function (evt) {
-        if (evt.key === 'Escape') {
-            closePopUp(popup);
-        }
-    })
-    popup.addEventListener('click', function (evt) {
-        if (evt.target.classList.contains('popup')) {
-            closePopUp(popup)
-        }
-    })
+function closeByEscape(evt) {
+    if (evt.key === 'Escape') {
+        const openedPopup = document.querySelector('.popup_opened');
+        closePopUp(openedPopup);
+    }
 }
 
 const showInputError = (form, input, error, obj) => {
@@ -51,8 +45,10 @@ const hasInvalidInput = (inputList) => {
 const switchButtonState = (inputList, button, obj) => {
     if (hasInvalidInput(inputList)) {
         button.classList.add(obj.inactiveButtonClass);
+        button.setAttribute('disabled', true);
     } else {
         button.classList.remove(obj.inactiveButtonClass);
+        button.removeAttribute('disabled');
     }
 }
 
@@ -77,10 +73,5 @@ const enableValidation = (obj) => {
         setEventListeners(form, obj);
     });
 };
-
-
-closePopUpEsc(popUpProf);
-closePopUpEsc(popUpPlace);
-closePopUpEsc(popUpIll);
 
 enableValidation(classes);
