@@ -1,3 +1,8 @@
+import Card from './Card.js';
+import FormValidator from './FormValidator.js';
+
+export { showPopUp, switchLike, deletePlace, popUpIll, illustration, illustrationDesc };
+
 const page = document.querySelector('.page');
 const popups = document.querySelectorAll('.popup')
 const editButton = page.querySelector('.profile__edit-button'); //кнопка изменения профиля
@@ -46,26 +51,27 @@ const initialCards = [
         link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
     }
 ];
+const classes = {
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__submit',
+    inactiveButtonClass: 'popup__submit_disabled',
+    inputErrorClass: 'popup__input_error',
+    errorClass: 'popup__input-error_active',
+};
 
-function createCard(name, link) {
-    const elementAdded = elementTemplate.querySelector('.element').cloneNode(true);
-    elementAdded.querySelector('.element__pic').src = link;
-    elementAdded.querySelector('.element__pic').alt = name;
-    elementAdded.querySelector('.element__name').textContent = name;
-    elementAdded.querySelector('.element__like').addEventListener('click', switchLike);
-    elementAdded.querySelector('.element__trash').addEventListener('click', deletePlace);
-    elementAdded.querySelector('.element__pic').addEventListener('click', function (evt) {
-        showPopUp(popUpIll);
-        illustration.src = evt.target.src;
-        illustrationDesc.textContent = evt.target.parentElement.querySelector('.element__name').textContent;
-        illustration.alt = illustrationDesc.textContent;
-    });
-    return elementAdded;
+const loadCards = () => {
+    initialCards.forEach((item) => {
+        const cardElement = new Card(item.name, item.link, elementTemplate);
+        allElements.prepend(cardElement.createCard());
+    })
 }
 
-function loadCards() {
-    initialCards.forEach((item) => {
-        allElements.prepend(createCard(item.name, item.link));
+const setValidation = () => {
+    const formList = Array.from(document.querySelectorAll(classes.formSelector));
+    formList.forEach(form => {
+        const formElement = new FormValidator(classes, form);
+        formElement.enableValidation();
     })
 }
 
@@ -77,17 +83,29 @@ function showPopUp(element) {
 function showPopUpProfile(obj) {
     nameInput.value = profileName.textContent;
     jobInput.value = profileDesc.textContent;
-    const inputList = Array.from(popUpProf.querySelectorAll(obj.inputSelector));
-    inputList.forEach(item => {
-        hideInputError(popUpProf.querySelector(obj.formSelector), item, obj)
-    });
-    switchButtonState(inputList, popUpProf.querySelector(obj.submitButtonSelector), obj)
+
+    nameInput.dispatchEvent(new Event('input'));
+    jobInput.dispatchEvent(new Event('input'));
+    // nameInput.dispatchEvent('change')
+    // jobInput.dispatchEvent('change')
+    // const inputList = Array.from(popUpProf.querySelectorAll(obj.inputSelector));
+    // inputList.forEach(item => {
+    //     hideInputError(popUpProf.querySelector(obj.formSelector), item, obj)
+    // });
+    // switchButtonState(inputList, popUpProf.querySelector(obj.submitButtonSelector), obj)
     showPopUp(popUpProf);
 }
 
 function closePopUp(element) {
     element.classList.remove('popup_opened');
     document.removeEventListener('keydown', closeByEscape);
+}
+
+function closeByEscape(evt) {
+    if (evt.key === 'Escape') {
+        const openedPopup = document.querySelector('.popup_opened');
+        closePopUp(openedPopup);
+    }
 }
 
 function setCloseEventListeners(popups) {
@@ -112,7 +130,8 @@ function handleFormSubmit(evt) {
 
 function handleAddFormSubmit(evt) {
     evt.preventDefault();
-    allElements.prepend(createCard(placeName.value, placeLink.value));
+    const cardAdded = new Card(placeName.value, placeLink.value, elementTemplate);
+    allElements.prepend(cardAdded.createCard());
     evt.target.reset();
     closePopUp(popUpPlace);
     const submitButton = popUpPlace.querySelector('.popup__submit');
@@ -135,3 +154,4 @@ formEdit.addEventListener('submit', handleFormSubmit);
 formAdd.addEventListener('submit', handleAddFormSubmit);
 
 loadCards();
+setValidation();
