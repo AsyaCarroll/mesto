@@ -1,7 +1,7 @@
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 
-export { showPopUp, switchLike, deletePlace, popUpIll, illustration, illustrationDesc };
+export { showPopUp, popUpIll, illustration, illustrationDesc };
 
 const page = document.querySelector('.page');
 const popups = document.querySelectorAll('.popup')
@@ -20,7 +20,7 @@ const placeName = page.querySelector('.popup__input_type_pic-name'); //инпу�
 const placeLink = page.querySelector('.popup__input_type_link'); // инпут ссылка на картинку места
 
 const allElements = page.querySelector('.elements');
-const elementTemplate = page.querySelector('#element').content; //шаблон элемента
+const templateSelector = 'element';
 const popUpIll = page.querySelector('.illustration');
 const illustration = page.querySelector('.popup__illustration-img');
 const illustrationDesc = page.querySelector('.popup__illustration-desc');
@@ -60,19 +60,24 @@ const classes = {
     errorClass: 'popup__input-error_active',
 };
 
+const makeCard = (name, link) => {
+    return new Card(name, link, templateSelector);
+}
+
 const loadCards = () => {
     initialCards.forEach((item) => {
-        const cardElement = new Card(item.name, item.link, elementTemplate);
-        allElements.prepend(cardElement.createCard());
+        allElements.prepend(makeCard(item.name, item.link).createCard());
     })
 }
 
-const setValidation = () => {
-    const formList = Array.from(document.querySelectorAll(classes.formSelector));
-    formList.forEach(form => {
-        const formElement = new FormValidator(classes, form);
-        formElement.enableValidation();
-    })
+const setValidation = (placeForm, profileForm) => {
+    placeForm.enableValidation();
+    profileForm.enableValidation();
+    // const formList = Array.from(document.querySelectorAll(classes.formSelector));
+    // formList.forEach(form => {
+    //     const formElement = new FormValidator(classes, form);
+    //     formElement.enableValidation();
+    // })
 }
 
 function showPopUp(element) {
@@ -80,19 +85,10 @@ function showPopUp(element) {
     document.addEventListener('keydown', closeByEscape);
 }
 
-function showPopUpProfile(obj) {
+function showPopUpProfile() {
     nameInput.value = profileName.textContent;
     jobInput.value = profileDesc.textContent;
-
-    nameInput.dispatchEvent(new Event('input'));
-    jobInput.dispatchEvent(new Event('input'));
-    // nameInput.dispatchEvent('change')
-    // jobInput.dispatchEvent('change')
-    // const inputList = Array.from(popUpProf.querySelectorAll(obj.inputSelector));
-    // inputList.forEach(item => {
-    //     hideInputError(popUpProf.querySelector(obj.formSelector), item, obj)
-    // });
-    // switchButtonState(inputList, popUpProf.querySelector(obj.submitButtonSelector), obj)
+    profileForm.resetValidation();
     showPopUp(popUpProf);
 }
 
@@ -130,28 +126,20 @@ function handleFormSubmit(evt) {
 
 function handleAddFormSubmit(evt) {
     evt.preventDefault();
-    const cardAdded = new Card(placeName.value, placeLink.value, elementTemplate);
+    const cardAdded = makeCard(placeName.value, placeLink.value);
     allElements.prepend(cardAdded.createCard());
     evt.target.reset();
     closePopUp(popUpPlace);
-    const submitButton = popUpPlace.querySelector('.popup__submit');
-    submitButton.classList.add('popup__submit_disabled');
-    submitButton.setAttribute('disabled', true);
+    placeForm.resetValidation();
 }
 
-function switchLike(evt) {
-    evt.target.classList.toggle('element__like_active');
-}
-
-function deletePlace(evt) {
-    evt.target.parentElement.parentElement.remove();
-}
-
-editButton.addEventListener('click', function () { showPopUpProfile(classes) });
+editButton.addEventListener('click', function () { showPopUpProfile() });
 addButton.addEventListener('click', function () { showPopUp(popUpPlace) });
 setCloseEventListeners(popups);
 formEdit.addEventListener('submit', handleFormSubmit);
 formAdd.addEventListener('submit', handleAddFormSubmit);
 
 loadCards();
-setValidation();
+const profileForm = new FormValidator(classes, formEdit);
+const placeForm = new FormValidator(classes, formAdd);
+setValidation(profileForm, placeForm);
