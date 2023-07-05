@@ -35,7 +35,7 @@ export default class FormValidator {
     }
 
     _switchButtonState() {
-        if (this._hasInvalidInput(this._inputList)) {
+        if (this._hasInvalidInput()) {
             this._button.classList.add(this._settings.inactiveButtonClass);
             this._button.setAttribute('disabled', true);
         } else {

@@ -61,12 +61,12 @@ const classes = {
 };
 
 const makeCard = (name, link) => {
-    return new Card(name, link, templateSelector);
+    return new Card(name, link, templateSelector).createCard();
 }
 
 const loadCards = () => {
     initialCards.forEach((item) => {
-        allElements.prepend(makeCard(item.name, item.link).createCard());
+        allElements.prepend(makeCard(item.name, item.link));
     })
 }
 
@@ -127,7 +127,7 @@ function handleFormSubmit(evt) {
 function handleAddFormSubmit(evt) {
     evt.preventDefault();
     const cardAdded = makeCard(placeName.value, placeLink.value);
-    allElements.prepend(cardAdded.createCard());
+    allElements.prepend(cardAdded);
     evt.target.reset();
     closePopUp(popUpPlace);
     placeForm.resetValidation();

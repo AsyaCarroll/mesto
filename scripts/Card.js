@@ -4,34 +4,35 @@ export default class Card {
     constructor(name, link, template) {
         this.name = name;
         this.link = link;
-        this.template = template; //const elementTemplate шаблон
+        this.template = template;
+        this._elementAdded = document.querySelector(`#${this.template}`).content.querySelector('.element').cloneNode(true);
+        this._likeButton = this._elementAdded.querySelector('.element__like');
     }
 
-    _switchLike(evt) {
-        evt.target.classList.toggle('element__like_active');
+    _switchLike() {
+        this.classList.toggle('element__like_active');
     }
 
-    _deletePlace(evt) {
-        evt.target.closest('.element').remove();
+    _deletePlace() {
+        this.closest('.element').remove(); //здесь не обойтись без closest, т.к. в данном контексте this является кнопкой удаления, а не карточкой
     }
 
-    _setEventListeners(element) {
-        element.querySelector('.element__like').addEventListener('click', this._switchLike);
-        element.querySelector('.element__trash').addEventListener('click', this._deletePlace);
-        element.querySelector('.element__pic').addEventListener('click', function () {
+    _setEventListeners() {
+        this._elementAdded.querySelector('.element__like').addEventListener('click', this._switchLike);
+        this._elementAdded.querySelector('.element__trash').addEventListener('click', this._deletePlace);
+        this._elementAdded.querySelector('.element__pic').addEventListener('click', () => {
             showPopUp(popUpIll);
-            illustration.src = element.querySelector('.element__pic').src;
-            illustrationDesc.textContent = element.querySelector('.element__name').textContent;
-            illustration.alt = illustrationDesc.textContent;
+            illustration.src = this.link;
+            illustrationDesc.textContent = this.name;
+            illustration.alt = this.name;
         });
     }
 
     createCard() {
-        const elementAdded = document.querySelector(`#${this.template}`).content.querySelector('.element').cloneNode(true);
-        elementAdded.querySelector('.element__pic').src = this.link;
-        elementAdded.querySelector('.element__pic').alt = this.name;
-        elementAdded.querySelector('.element__name').textContent = this.name;
-        this._setEventListeners(elementAdded);
-        return elementAdded;
+        this._elementAdded.querySelector('.element__pic').src = this.link;
+        this._elementAdded.querySelector('.element__pic').alt = this.name;
+        this._elementAdded.querySelector('.element__name').textContent = this.name;
+        this._setEventListeners();
+        return this._elementAdded;
     }
 }
