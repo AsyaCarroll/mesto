@@ -10,16 +10,17 @@ export default class Card {
     }
 
     _switchLike() {
-        this.classList.toggle('element__like_active');
+        this._likeButton.classList.toggle('element__like_active');
     }
 
     _deletePlace() {
-        this.closest('.element').remove(); //здесь не обойтись без closest, т.к. в данном контексте this является кнопкой удаления, а не карточкой
+        this._elementAdded.remove();
+        this._elementAdded = null;
     }
 
     _setEventListeners() {
-        this._elementAdded.querySelector('.element__like').addEventListener('click', this._switchLike);
-        this._elementAdded.querySelector('.element__trash').addEventListener('click', this._deletePlace);
+        this._likeButton.addEventListener('click', () => this._switchLike()); //стало понятнее, как это работает. большое спасибо <3
+        this._elementAdded.querySelector('.element__trash').addEventListener('click', () => this._deletePlace());
         this._elementAdded.querySelector('.element__pic').addEventListener('click', () => {
             showPopUp(popUpIll);
             illustration.src = this.link;
