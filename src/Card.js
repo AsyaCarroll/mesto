@@ -1,10 +1,12 @@
-import { showPopUp, popUpIll, illustration, illustrationDesc } from "./index.js";
+import { popUpIll } from "./index.js";
+import PopupWithImage from './PopupWithImage.js';
 
 export default class Card {
-    constructor(name, link, template) {
+    constructor(name, link, template, handleCardClick) {
         this.name = name;
         this.link = link;
         this.template = template;
+        this.handleCardClick = handleCardClick;
         this._elementAdded = document.querySelector(`#${this.template}`).content.querySelector('.element').cloneNode(true);
         this._likeButton = this._elementAdded.querySelector('.element__like');
     }
@@ -19,14 +21,9 @@ export default class Card {
     }
 
     _setEventListeners() {
-        this._likeButton.addEventListener('click', () => this._switchLike()); //стало понятнее, как это работает. большое спасибо <3
+        this._likeButton.addEventListener('click', () => this._switchLike()); 
         this._elementAdded.querySelector('.element__trash').addEventListener('click', () => this._deletePlace());
-        this._elementAdded.querySelector('.element__pic').addEventListener('click', () => {
-            showPopUp(popUpIll);
-            illustration.src = this.link;
-            illustrationDesc.textContent = this.name;
-            illustration.alt = this.name;
-        });
+        this._elementAdded.querySelector('.element__pic').addEventListener('click', this.handleCardClick);
     }
 
     createCard() {

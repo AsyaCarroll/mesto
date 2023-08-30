@@ -5,18 +5,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="pages/index.css">
     <title>Место</title>
 </head>
 
 <body class="page">
     <header class="header">
-        <img src="./images/logo.svg" alt="Логотип Mesto" class="header__logo">
+        <img src="<%=require('./images/logo.svg')%>" alt="Логотип Mesto" class="header__logo">
     </header>
     <main class="content">
         <section class="profile">
             <div class="profile__container">
-                <img src="./images/avatar.jpg" alt="аватар профиля" class="profile__avatar">
+                <img src="<%=require('./images/avatar.jpg')%>" alt="аватар профиля" class="profile__avatar">
                 <div class="profile__info">
                     <div class="profile__name-options">
                         <h1 class="profile__name">Жак-Ив Кусто</h1>
@@ -31,7 +30,8 @@
             <template id="element">
                 <article class="element">
                     <img src="#" alt="#" class="element__pic">
-                    <button class="element__trash" type="button"><img src="./images/trash.svg" alt="удалить"></button>
+                    <button class="element__trash" type="button"><img src="<%=require('./images/trash.svg')%>"
+                            alt="удалить"></button>
                     <div class="element__description">
                         <h2 class="element__name">name</h2>
                         <button type="button" class="element__like"></button>
@@ -45,7 +45,7 @@
     </footer>
     <section class="popup illustration">
         <figure class="popup__figure">
-            <img src="./images/dombay.png" alt="#" class="popup__illustration-img">
+            <img src="<%=require('./images/dombay.png')%>" alt="#" class="popup__illustration-img">
             <figcaption class="popup__illustration-desc">place</figcaption>
             <button type="button" aria-label="закрыть" class="popup__close"></button>
         </figure>
@@ -81,7 +81,6 @@
             <button type="button" aria-label="закрыть" class="popup__close"></button>
         </div>
     </div>
-    <script type="module" src="./scripts/index.js"></script>
 </body>
 
 </html>
