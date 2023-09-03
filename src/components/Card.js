@@ -1,6 +1,3 @@
-import { popUpIll } from "./index.js";
-import PopupWithImage from './PopupWithImage.js';
-
 export default class Card {
     constructor(name, link, template, handleCardClick) {
         this.name = name;
@@ -21,14 +18,15 @@ export default class Card {
     }
 
     _setEventListeners() {
-        this._likeButton.addEventListener('click', () => this._switchLike()); 
+        this._likeButton.addEventListener('click', () => this._switchLike());
         this._elementAdded.querySelector('.element__trash').addEventListener('click', () => this._deletePlace());
         this._elementAdded.querySelector('.element__pic').addEventListener('click', this.handleCardClick);
     }
 
     createCard() {
-        this._elementAdded.querySelector('.element__pic').src = this.link;
-        this._elementAdded.querySelector('.element__pic').alt = this.name;
+        const picElement = this._elementAdded.querySelector('.element__pic');
+        picElement.src = this.link;
+        picElement.alt = this.name;
         this._elementAdded.querySelector('.element__name').textContent = this.name;
         this._setEventListeners();
         return this._elementAdded;
