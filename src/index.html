@@ -72,8 +72,7 @@
                 <input type="text" name="place-name" placeholder="Название" required minlength="2" maxlength="30"
                     class="popup__input popup__input_type_pic-name" id="place-input">
                 <span class="popup__input-error place-input-error"></span>
-                <input type="text" name="place-link" placeholder="Ссылка на картинку" required
-                    pattern="(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])"
+                <input type="url" name="place-link" placeholder="Ссылка на картинку" required
                     class="popup__input popup__input_type_link" id="link-input">
                 <span class="popup__input-error link-input-error"></span>
                 <button type="submit" class="popup__submit">Создать</button>

@@ -71,8 +71,8 @@ const classes = {
 const makeCard = (name, link) => {
     return new Card(name, link, templateSelector,
         () => {
-            popupImg.name = name;
-            popupImg.link = link;
+            popupImg.name = name; // в предыдущем ревью здесь я создавала экземпляр класса PopupWithImage, но было сказано, что лучше "при открытии менять его содержимое"
+            popupImg.link = link; // данные меняются только здесь. почему это не корректное решение?
             popupImg.open();
         }).createCard();
 }
@@ -85,15 +85,13 @@ const setValidation = (placeValid, profileValid) => {
 
 function handleFormSubmit(evt, inputValues) {
     evt.preventDefault();
-    // console.log('inputvalues', inputValues)
-    // console.log(inputValues.name)
-    info.setUserInfo(inputValues.name, inputValues.info);
+    info.setUserInfo(inputValues[0], inputValues[1]);
     profileForm.close();
 }
 
 function handleAddFormSubmit(evt, inputValues) {
     evt.preventDefault();
-    const cardAdded = makeCard(inputValues.name, inputValues.info);
+    const cardAdded = makeCard(inputValues[0], inputValues[1]);
     cards.addItem(cardAdded);
     placeForm.close();
     placeValid.resetValidation();
@@ -104,15 +102,15 @@ function clickEditButton() {
     nameInput.value = value.name;
     infoInput.value = value.info;
     profileValid.resetValidation();
-    const popupProfile = new Popup(popupProfSelector);
+    const popupProfile = new PopupWithForm(popupProfSelector);
     popupProfile.open();
-    popupProfile.setEventListeners();
+    // popupProfile.setEventListeners();
 }
 
 function clickAddButton() {
-    const popupPlace = new Popup(popupPlaceSelector);
+    const popupPlace = new PopupWithForm(popupPlaceSelector);
     popupPlace.open();
-    popupPlace.setEventListeners();
+    // popupPlace.setEventListeners();
 }
 
 const dataSection = { items: initialCards, renderer: makeCard };
