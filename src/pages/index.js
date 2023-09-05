@@ -70,11 +70,7 @@ const classes = {
 
 const makeCard = (name, link) => {
     return new Card(name, link, templateSelector,
-        () => {
-            popupImg.name = name; // в предыдущем ревью здесь я создавала экземпляр класса PopupWithImage, но было сказано, что лучше "при открытии менять его содержимое"
-            popupImg.link = link; // данные меняются только здесь. почему это не корректное решение?
-            popupImg.open();
-        }).createCard();
+        () => { popupImg.open(name, link) }).createCard();
 }
 
 
@@ -85,13 +81,13 @@ const setValidation = (placeValid, profileValid) => {
 
 function handleFormSubmit(evt, inputValues) {
     evt.preventDefault();
-    info.setUserInfo(inputValues[0], inputValues[1]);
+    info.setUserInfo(inputValues.name, inputValues.description);
     profileForm.close();
 }
 
 function handleAddFormSubmit(evt, inputValues) {
     evt.preventDefault();
-    const cardAdded = makeCard(inputValues[0], inputValues[1]);
+    const cardAdded = makeCard(inputValues.place, inputValues.link);
     cards.addItem(cardAdded);
     placeForm.close();
     placeValid.resetValidation();
