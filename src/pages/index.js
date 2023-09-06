@@ -98,15 +98,11 @@ function clickEditButton() {
     nameInput.value = value.name;
     infoInput.value = value.info;
     profileValid.resetValidation();
-    const popupProfile = new PopupWithForm(popupProfSelector);
-    popupProfile.open();
-    // popupProfile.setEventListeners();
+    profileForm.open();
 }
 
 function clickAddButton() {
-    const popupPlace = new PopupWithForm(popupPlaceSelector);
-    popupPlace.open();
-    // popupPlace.setEventListeners();
+    placeForm.open();
 }
 
 const dataSection = { items: initialCards, renderer: makeCard };
