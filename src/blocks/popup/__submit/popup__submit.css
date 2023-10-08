@@ -12,6 +12,7 @@
     border: none;
     padding: 14px 0;
     cursor: pointer;
+    width: 100%;
 }
 
 .popup__submit:hover {

@@ -1,11 +1,12 @@
 export default class Card {
-    constructor(name, link, template, handleCardClick) {
+    constructor(name, link, template, handleCardClick, popupDelete) {
         this.name = name;
         this.link = link;
         this.template = template;
         this.handleCardClick = handleCardClick;
         this._elementAdded = document.querySelector(`#${this.template}`).content.querySelector('.element').cloneNode(true);
         this._likeButton = this._elementAdded.querySelector('.element__like');
+        this._popupDelete = popupDelete;
     }
 
     _switchLike() {
