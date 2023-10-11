@@ -1,7 +1,7 @@
 import Card from '../components/Card.js';
 import FormValidator from '../components/FormValidator.js';
 import Section from '../components/Section.js';
-import Popup from '../components/Popup.js';
+import PopupDelete from '../components/PopupDelete.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import UserInfo from '../components/UserInfo.js';
@@ -114,6 +114,13 @@ function handleAvatarFormSubmit(evt, inputValues) {
     avatarForm.close();
 }
 
+function handleDeleteSubmit(evt, card) {
+    evt.preventDefault();
+    card.remove();
+    card = null;
+    popupDelete.close();
+}
+
 function clickEditButton() {
     nameInput.value = profileName.textContent;
     infoInput.value = profileDesc.textContent;
@@ -133,7 +140,7 @@ const api = new Api('options');
 const initialCards = await loadCards();
 const dataSection = { items: initialCards, renderer: makeCard };
 const popupImg = new PopupWithImage('illustration', 'name', 'link');
-const popupDelete = new Popup(popupDeleteSelector);
+const popupDelete = new PopupDelete(popupDeleteSelector, handleDeleteSubmit);
 const cards = new Section(dataSection, allElementsSelector);
 const profileValid = new FormValidator(classes, formEdit);
 const placeValid = new FormValidator(classes, formAdd);
@@ -147,6 +154,7 @@ popupImg.setEventListeners();
 profileForm.setEventListeners();
 placeForm.setEventListeners();
 avatarForm.setEventListeners();
+popupDelete.setEventListeners();
 editButton.addEventListener('click', clickEditButton);
 addButton.addEventListener('click', clickAddButton);
 avatarEditButton.addEventListener('click', clickAvatarEditButton)

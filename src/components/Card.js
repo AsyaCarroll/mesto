@@ -14,8 +14,9 @@ export default class Card {
     }
 
     _deletePlace() {
-        this._elementAdded.remove();
-        this._elementAdded = null;
+        this._popupDelete.open(this._elementAdded);
+        // this._elementAdded.remove();
+        // this._elementAdded = null;
     }
 
     _setEventListeners() {
