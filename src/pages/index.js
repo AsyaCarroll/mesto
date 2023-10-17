@@ -28,6 +28,7 @@ const profileDescSelector = 'profile__description';
 const profileAvatarSelector = 'profile__avatar';
 const profileName = document.querySelector(`.${profileNameSelector}`);
 const profileDesc = document.querySelector(`.${profileDescSelector}`);
+const profileAvatar = document.querySelector(`.${profileAvatarSelector}`);
 
 const allElementsSelector = 'elements';
 const templateSelector = 'element';
@@ -35,32 +36,6 @@ const popUpIll = page.querySelector('.illustration');
 const illustration = page.querySelector('.popup__illustration-img');
 const illustrationDesc = page.querySelector('.popup__illustration-desc');
 
-// const initialCards = [
-//     {
-//         name: 'Архыз',
-//         link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-//     },
-//     {
-//         name: 'Челябинская область',
-//         link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-//     },
-//     {
-//         name: 'Иваново',
-//         link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-//     },
-//     {
-//         name: 'Камчатка',
-//         link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-//     },
-//     {
-//         name: 'Холмогорский район',
-//         link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-//     },
-//     {
-//         name: 'Байкал',
-//         link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-//     }
-// ];
 const classes = {
     formSelector: '.popup__form',
     inputSelector: '.popup__input',
@@ -74,9 +49,34 @@ function loadCards() {
     return api.getCards();
 }
 
-const makeCard = (name, link) => {
-    return new Card(name, link, templateSelector,
-        () => { popupImg.open(name, link) }, popupDelete).createCard();
+const makeCard = (data) => {
+    // console.log(data);
+    const card = new Card(userId, templateSelector, data, popupDelete,
+        handleCardClick,
+        handleCardLike,
+        handleCardRemoveLike,
+    ).createCard();
+    return card;
+}
+
+const handleCardClick = (name, link) => {
+    popupImg.open(name, link);
+}
+
+const handleCardLike = (id, card) => {
+    api.leaveLike(id).then(res => {
+        card._likes = res.likes;
+        card._likesLength = card._likes.length;
+        card.leaveLike();
+    });
+}
+
+const handleCardRemoveLike = (id, card) => {
+    api.removeLike(id).then(res => {
+        card._likes = res.likes;
+        card._likesLength = card._likes.length;
+        card.removeLike();
+    });
 }
 
 const setValidation = (placeValid, profileValid) => {
@@ -85,7 +85,7 @@ const setValidation = (placeValid, profileValid) => {
 }
 
 function loadProfileInfo() {
-    info.getUserInfo().then(data => {
+    api.getUserInfo().then(data => {
         document.querySelector(`.${profileNameSelector}`).textContent = data.name;
         document.querySelector(`.${profileDescSelector}`).textContent = data.about;
         document.querySelector(`.${profileAvatarSelector}`).src = data.avatar;
@@ -94,28 +94,47 @@ function loadProfileInfo() {
 
 function handleFormSubmit(evt, inputValues) {
     evt.preventDefault();
-    info.setUserInfo(inputValues.name, inputValues.description);
-    loadProfileInfo();
-    profileForm.close();
+    api.setUserInfo(inputValues.name, inputValues.description)
+        .then(() => {
+            profileForm.setSubmitButtonText('Сохранение...');
+            loadProfileInfo();
+        })
+        .finally(() => {
+            profileForm.setSubmitButtonText('Сохранить');
+            profileForm.close();
+        })
 }
 
 function handleAddFormSubmit(evt, inputValues) {
     evt.preventDefault();
-    const cardAdded = makeCard(inputValues.place, inputValues.link);
-    api.addCard(inputValues.place, inputValues.link);
-    cards.addItem(cardAdded);
-    placeForm.close();
-    placeValid.resetValidation();
+    api.addCard(inputValues.name, inputValues.link).then((data) => {
+        placeForm.setSubmitButtonText('Сохранение...');
+        let cardAdded = makeCard(data);
+        cards.addItem(cardAdded);
+    })
+        .finally(() => {
+            placeForm.setSubmitButtonText('Создать');
+            placeForm.close();
+            placeValid.resetValidation();
+        })
 }
 
 function handleAvatarFormSubmit(evt, inputValues) {
     evt.preventDefault();
-    info.changeAvatar(inputValues.link);
-    avatarForm.close();
+    api.changeAvatar(inputValues.link)
+        .then(() => {
+            avatarForm.setSubmitButtonText('Сохранение...');
+            profileAvatar.src = inputValues.link;
+        })
+        .finally(() => {
+            avatarForm.setSubmitButtonText('Сохранить');
+            avatarForm.close();
+        })
 }
 
-function handleDeleteSubmit(evt, card) {
+function handleDeleteSubmit(evt, card, cardId) {
     evt.preventDefault();
+    api.deleteCard(cardId);
     card.remove();
     card = null;
     popupDelete.close();
@@ -136,7 +155,7 @@ function clickAvatarEditButton() {
     avatarForm.open();
 }
 
-const api = new Api('options');
+const api = new Api('https://mesto.nomoreparties.co/v1/cohort-77', 'c7903c03-78db-40da-a400-33babc81adf5');
 const initialCards = await loadCards();
 const dataSection = { items: initialCards, renderer: makeCard };
 const popupImg = new PopupWithImage('illustration', 'name', 'link');
@@ -147,7 +166,9 @@ const placeValid = new FormValidator(classes, formAdd);
 const profileForm = new PopupWithForm(popupProfSelector, handleFormSubmit);
 const placeForm = new PopupWithForm(popupPlaceSelector, handleAddFormSubmit);
 const avatarForm = new PopupWithForm(popupAvatarSelector, handleAvatarFormSubmit);
-const info = new UserInfo({ name: profileNameSelector, info: profileDescSelector, avatar: profileAvatarSelector, api: api });
+const info = new UserInfo({ name: profileNameSelector, info: profileDescSelector, avatar: profileAvatarSelector });
+const user = await api.getUserInfo();
+const userId = user._id;
 
 cards.renderItems();
 popupImg.setEventListeners();
@@ -162,3 +183,4 @@ avatarEditButton.addEventListener('click', clickAvatarEditButton)
 setValidation(profileValid, placeValid);
 loadProfileInfo();
 
+// api.getLikes('652e96f951c60d1277c4e627').then(res => console.log(res))

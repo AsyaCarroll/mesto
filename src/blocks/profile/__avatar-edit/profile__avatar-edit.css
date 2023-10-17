@@ -1,7 +1,6 @@
 .profile__avatar-edit {
-    position: absolute;
-    left: 75px;
-    top: 164px;
+    position: relative;
+    top: -125px;
     background-image: url(../../../images/edit.svg);
     width: 120px;
     height: 120px;
