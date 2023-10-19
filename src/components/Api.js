@@ -4,6 +4,13 @@ export default class Api {
         this.token = token;
     }
 
+    _getResponseData(res) {
+        if (res.ok) {
+            return res.json()
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+    } 
+
     getCards() {
         return fetch(`${this.url}/cards`, {
             headers: {
@@ -11,13 +18,11 @@ export default class Api {
             }
         })
             .then(res => {
+                // this._getResponseData(res) //когда пытаюсь заменить на эту функцию, карточки и информация не загружаются
                 if (res.ok) {
                     return res.json()
                 }
                 return Promise.reject(`Ошибка: ${res.status}`);
-            })
-            .catch((err) => {
-                console.log(err);
             })
     }
 
@@ -39,9 +44,6 @@ export default class Api {
                 }
                 return Promise.reject(`Ошибка: ${res.status}`);
             })
-            .catch((err) => {
-                console.log(err);
-            })
     }
 
     deleteCard(card_id) {
@@ -51,9 +53,6 @@ export default class Api {
                 authorization: `${this.token}`
             }
         })
-            .catch((err) => {
-                console.log(err);
-            })
     }
 
     getUserInfo() {
@@ -67,9 +66,6 @@ export default class Api {
                     return res.json()
                 }
                 return Promise.reject(`Ошибка: ${res.status}`);
-            })
-            .catch((err) => {
-                console.log(err);
             })
     }
 
@@ -85,12 +81,9 @@ export default class Api {
                 about: newDesc,
             })
         })
-            .catch((err) => {
-                console.log(err);
-            })
     }
 
-    changeAvatar(avatar) {
+    setAvatar(avatar) {
         return fetch(`${this.url}/users/me/avatar`, {
             method: 'PATCH',
             headers: {
@@ -101,27 +94,7 @@ export default class Api {
                 avatar: avatar,
             })
         })
-            .catch((err) => {
-                console.log(err);
-            })
     }
-
-    // getLikes(card_id) {
-    //     return fetch(`https://mesto.nomoreparties.co/v1/cohort-77/cards/${card_id}`, {
-    //         headers: {
-    //             authorization: 'c7903c03-78db-40da-a400-33babc81adf5'
-    //         }
-    //     })
-    //         .then(res => {
-    //             if (res.ok) {
-    //                 return res.json()
-    //             }
-    //             return Promise.reject(`Ошибка: ${res.status}`);
-    //         })
-    //         .catch((err) => {
-    //             console.log(err);
-    //         })
-    // }
 
     leaveLike(card_id) {
         return fetch(`${this.url}/cards/${card_id}/likes`, {
@@ -135,9 +108,6 @@ export default class Api {
                     return res.json()
                 }
                 return Promise.reject(`Ошибка: ${res.status}`);
-            })
-            .catch((err) => {
-                console.log(err);
             })
     }
 
@@ -154,9 +124,6 @@ export default class Api {
                     return res.json()
                 }
                 return Promise.reject(`Ошибка: ${res.status}`);
-            })
-            .catch((err) => {
-                console.log(err);
             })
     }
 }
