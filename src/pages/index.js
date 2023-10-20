@@ -20,7 +20,8 @@ const popupDeleteSelector = 'delete-place';
 const popupAvatarSelector = 'patch-avatar';
 const formEdit = page.querySelector('.popup__edit-form'); //форма редактирования
 const formAdd = page.querySelector('.popup__add-form'); //форма добавления
-const formAvatar = page.querySelector('.popup__avatar-form')
+const formAvatar = page.querySelector('.popup__avatar-form');
+const formDelete = page.querySelector('.popup__delete-form');
 
 const nameInput = formEdit.querySelector('.popup__input_type_name'); //имя пользователя
 const infoInput = formEdit.querySelector('.popup__input_type_description'); //описание
@@ -97,14 +98,10 @@ const setValidation = () => {
 
 function handleEditFormSubmit(evt, inputValues) {
     evt.preventDefault();
+    profileForm.setSubmitButtonText('Сохранение...');
     api.setUserInfo(inputValues.name, inputValues.about)
-        .then((res) => {
-            if (res.ok) {
-                profileForm.setSubmitButtonText('Сохранение...');
-                info.setUserInfo(inputValues)
-            }
-        })
         .then(() => {
+            info.setUserInfo(inputValues);
             profileForm.close();
         })
         .catch((err) => {
@@ -117,13 +114,11 @@ function handleEditFormSubmit(evt, inputValues) {
 
 function handleAddFormSubmit(evt, inputValues) {
     evt.preventDefault();
+    placeForm.setSubmitButtonText('Сохранение...');
     api.addCard(inputValues.name, inputValues.link)
         .then((data) => {
-            placeForm.setSubmitButtonText('Сохранение...');
             const cardAdded = makeCard(data);
             cards.addItem(cardAdded);
-        })
-        .then(() => {
             placeForm.close();
         })
         .catch((err) => {
@@ -137,12 +132,10 @@ function handleAddFormSubmit(evt, inputValues) {
 
 function handleAvatarFormSubmit(evt, inputValues) {
     evt.preventDefault();
+    avatarForm.setSubmitButtonText('Сохранение...');
     api.setAvatar(inputValues.avatar)
         .then(() => {
-            avatarForm.setSubmitButtonText('Сохранение...');
             info.setAvatar(inputValues);
-        })
-        .then(() => {
             avatarForm.close();
         })
         .catch((err) => {
@@ -158,8 +151,6 @@ function handleDeleteSubmit(evt, card, cardId, cardElement) {
     api.deleteCard(cardId)
         .then(() => {
             card.deleteCard(cardElement);
-        })
-        .then(() => {
             popupDelete.close();
         })
         .catch((err) => {
@@ -189,7 +180,7 @@ const api = new Api('https://mesto.nomoreparties.co/v1/cohort-77', 'c7903c03-78d
 // const initialCards = await loadCards();
 // const dataSection = { items: initialCards, renderer: makeCard };
 const popupImg = new PopupWithImage('illustration', 'name', 'link');
-const popupDelete = new PopupDelete(popupDeleteSelector, handleDeleteSubmit);
+const popupDelete = new PopupDelete(popupDeleteSelector, formDelete, handleDeleteSubmit);
 // const cards = new Section(dataSection, allElementsSelector);
 const profileValid = new FormValidator(classes, formEdit);
 const placeValid = new FormValidator(classes, formAdd);

@@ -6,7 +6,7 @@ export default class UserInfo {
     }
 
     getUserInfo() {
-        return { name: this.name, about: this.about, avatar: this.avatar }
+        return { name: this.name.textContent, about: this.about.textContent, avatar: this.avatar.textContent }
     }
 
     setUserInfo(data) {
